@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SensorPOC", "SensorPOC\SensorPOC.csproj", "{F1BFF075-607E-41B5-8F4D-7038D117FAA5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IngesterPOC", "IngesterPOC\IngesterPOC.csproj", "{6EC5FDB3-1C78-4F16-B3E4-B4FA16F59815}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F1BFF075-607E-41B5-8F4D-7038D117FAA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1BFF075-607E-41B5-8F4D-7038D117FAA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1BFF075-607E-41B5-8F4D-7038D117FAA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1BFF075-607E-41B5-8F4D-7038D117FAA5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6EC5FDB3-1C78-4F16-B3E4-B4FA16F59815}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6EC5FDB3-1C78-4F16-B3E4-B4FA16F59815}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6EC5FDB3-1C78-4F16-B3E4-B4FA16F59815}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6EC5FDB3-1C78-4F16-B3E4-B4FA16F59815}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
