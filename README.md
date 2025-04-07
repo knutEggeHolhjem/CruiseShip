@@ -46,6 +46,7 @@ To maintain a clean separation of concerns and enable scalability, the component
 
 - **Refactor FileWriter to Depend on `ChannelReader<ISensorModel>`**  
   Refactor the `FileWriter` to use `ChannelReader<ISensorModel>`, with functions like `GetCsvHeader()`, `GetCsvRow()`, and a `SensorName` property. This removes the dependency on a specific sensor type (e.g., lat/lon sensor generator) and allows for greater flexibility with different sensor models.
+  I imagine we can add different custom sensor simulator and use the same writer. I do not think we want to configure key value of a sensor simulator because we want custom math, unless we also pass a function of something for generating the value. Probably easier to just create a new type in code.
 
 - **Handle restart**  
   Add a unique identifier, such as the program start time, to the file name to prevent duplicates after a restart.
