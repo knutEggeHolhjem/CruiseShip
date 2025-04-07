@@ -28,10 +28,10 @@ public class FileDetectionWorker : BackgroundService
 
     private void OnNewFileDetected(object sender, FileSystemEventArgs e)
     {
-        if(e.FullPath.EndsWith(".csv")) return;
+        if (e.FullPath.EndsWith(".csv")) return;
         if (File.Exists(e.FullPath))
         {
-            _writer.TryWrite(e.FullPath);  // Add file path to the channel
+            _writer.TryWrite(e.FullPath);
         }
         else
         {

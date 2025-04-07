@@ -2,11 +2,22 @@ using System.Threading.Channels;
 
 namespace SensorPOC;
 
-public class DataGeneratorWorker(ChannelWriter<SensorModel> writer) : BackgroundService
+public class DataGeneratorWorker : BackgroundService
 {
-    private const string SensorId = "100";
-    private const string SensorName = "SensorPOC";
+    private string _sensorId;
+    private string _sensorName;
+    private int _dataPerSecond;
     private static readonly Random Random = new();
+    private readonly ChannelWriter<SensorModel> _writer;
+
+    public DataGeneratorWorker(ChannelWriter<SensorModel> writer, IConfiguration configuration)
+    {
+        _sensorId = configuration["Data:SensorId"] ?? throw new ArgumentNullException("Data:SensorId is missing from configuration");
+        _sensorName = configuration["Data:SensorName"] ?? throw new ArgumentNullException("Data:SensorName is missing from configuration");
+        _dataPerSecond = configuration.GetValue<int>("Data:DataPerSecond");
+
+        _writer = writer;
+    }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
@@ -15,7 +26,7 @@ public class DataGeneratorWorker(ChannelWriter<SensorModel> writer) : Background
 
     public async Task GenerateData(CancellationToken stoppingToken)
     {
-        using var periodicTimer = new PeriodicTimer(TimeSpan.FromSeconds(1));
+        using var periodicTimer = new PeriodicTimer(TimeSpan.FromSeconds(_dataPerSecond));
 
         while (await periodicTimer.WaitForNextTickAsync(stoppingToken).ConfigureAwait(false))
         {
@@ -25,19 +36,19 @@ public class DataGeneratorWorker(ChannelWriter<SensorModel> writer) : Background
             var dataPoint = new SensorModel
             {
                 TimeStamp = DateTime.UtcNow,
-                SensorId = SensorId,
-                SensorName = SensorName,
+                SensorId = _sensorId,
+                SensorName = _sensorName,
                 Lat = lat,
                 Lon = lon
             };
 
-            _ = writer.TryWrite(dataPoint);
+            await _writer.WriteAsync(dataPoint, stoppingToken).ConfigureAwait(false);
         }
-        writer.Complete();
+        _writer.Complete();
     }
 
     private static double? RandomDoubleOrNull()
     {
-        return Random.NextDouble() < 0.1 ? null : Random.NextDouble() * 180 - 90;
+        return Random.NextDouble() < 0.1 ? null : Random.NextDouble() * 100 - 100;
     }
 }

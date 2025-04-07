@@ -6,13 +6,19 @@ public class FileWriterWorker : BackgroundService
 {
     private readonly string _baseDirectory;
     private readonly ChannelReader<SensorModel> _reader;
-    private const string SensorName = "SensorPOC";
-    private const int MaxEntriesPerFile = 100;
+    private string _sensorName;
+    private readonly int _maxEntriesPerFile;
 
     public FileWriterWorker(ChannelReader<SensorModel> reader, IConfiguration configuration)
     {
+        _sensorName = configuration["Data:SensorName"]
+                    ?? throw new ArgumentNullException("Data:SensorName is missing from configuration");
+
+        _maxEntriesPerFile = configuration.GetValue<int>("Data:MaxEntriesPerFile");
+
         string? configuredPath = configuration["Data:Location"];
-        _baseDirectory = configuredPath ?? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "sensor-data");
+        _baseDirectory = configuredPath
+                         ?? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "sensor-data");
 
         _reader = reader;
     }
@@ -28,8 +34,9 @@ public class FileWriterWorker : BackgroundService
         int fileCounter = 0;
         while (!stoppingToken.IsCancellationRequested)
         {
-            string fileName = $"{SensorName}_{DateTime.UtcNow:yyyyMMdd}_{fileCounter}.csv";
+            string fileName = $"{_sensorName}_{DateTime.UtcNow:yyyyMMdd}_{fileCounter}.csv";
             string filePath = Path.Combine(_baseDirectory, fileName);
+
             await WriteFile(filePath, stoppingToken).ConfigureAwait(false);
             await WriteDoneFile(filePath).ConfigureAwait(false);
 
@@ -49,13 +56,14 @@ public class FileWriterWorker : BackgroundService
             await writer.FlushAsync(stoppingToken).ConfigureAwait(false);
             entryCount++;
 
-            if (entryCount >= MaxEntriesPerFile) break;
+            if (entryCount >= _maxEntriesPerFile) break;
         }
     }
 
     private static async Task WriteDoneFile(string filePath)
     {
         string doneFilePath = filePath.Replace(".csv", ".done");
-        await using (FileStream fs = File.Create(doneFilePath)){};
+        await using (FileStream fs = File.Create(doneFilePath)) { }
+        ;
     }
 }

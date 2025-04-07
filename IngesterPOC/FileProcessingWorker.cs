@@ -6,7 +6,7 @@ namespace IngesterPOC;
 public class FileProcessingWorker : BackgroundService
 {
     private readonly ILogger<FileProcessingWorker> _logger;
-        private readonly ChannelReader<string> _reader;
+    private readonly ChannelReader<string> _reader;
 
     public FileProcessingWorker(ILogger<FileProcessingWorker> logger, ChannelReader<string> reader)
     {
@@ -20,9 +20,9 @@ public class FileProcessingWorker : BackgroundService
         {
             string filePath = doneFilePath.Replace(".done", ".csv");
             var ingestResult = await ProcessFile(filePath, stoppingToken).ConfigureAwait(false);
-            string jsonString = JsonSerializer.Serialize<IngestResult>(ingestResult);
+            string ingestResultJson = JsonSerializer.Serialize(ingestResult);
 
-            _logger.LogInformation("Ingest Result: {JsonString}", jsonString);
+            _logger.LogInformation("Ingest Result: {JsonString}", ingestResultJson);
 
             if (File.Exists(doneFilePath))
             {
@@ -40,9 +40,8 @@ public class FileProcessingWorker : BackgroundService
         string? timestamp = null;
         string fileName = Path.GetFileName(filePath);
 
-        
         var lines = await File.ReadAllLinesAsync(filePath, stoppingToken).ConfigureAwait(false);
-        
+
         foreach (var line in lines.Skip(1))
         {
             var values = line.Split(',');
