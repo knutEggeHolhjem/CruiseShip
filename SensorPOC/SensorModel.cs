@@ -8,7 +8,7 @@ public record SensorModel
     public double? Lat { get; init; }
     public double? Lon { get; init; }
 
-    public override string ToString()
+    public string ToCsvString()
     {
         return $"{TimeStamp:o},{SensorId},{SensorName},{"Lat"},{Lat?.ToString("F2") ?? ""},{"Lon"},{Lon?.ToString("F2") ?? ""}";
     }

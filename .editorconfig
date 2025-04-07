@@ -172,6 +172,13 @@ csharp_preserve_single_line_blocks = true
 csharp_preserve_single_line_statements = true
 
 #### Naming styles ####
+
+# CA1062: Validate arguments of public methods
+dotnet_diagnostic.CA1062.severity = silent
+
+# CA1848: Use the LoggerMessage delegates
+dotnet_diagnostic.CA1848.severity = silent
+
 [*.{cs,vb}]
 
 # Naming rules
@@ -354,6 +361,12 @@ dotnet_naming_style._camelcase.capitalization = camel_case
 
 dotnet_naming_style.camelcase.required_prefix = 
 dotnet_naming_style.camelcase.required_suffix = 
+
+# Default severity for all analyzer diagnostics
+dotnet_analyzer_diagnostic.severity = silent
+
+# Default severity for analyzer diagnostics with category 'Design'
+dotnet_analyzer_diagnostic.category-Design.severity = silent
 dotnet_naming_style.camelcase.word_separator = 
 dotnet_naming_style.camelcase.capitalization = camel_case
 

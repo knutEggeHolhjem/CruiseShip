@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  sensor-poc:
+    image: sensor-poc
+    environment:
+      - DOTNET_ENVIRONMENT=Container
+    build:
+      context: ./SensorPOC
+    volumes:
+      - "${SENSOR_DATA_LOCATION}:/app/data"
+    restart: always
+    depends_on:
+      - ingester-poc
+
+  ingester-poc:
+    image: ingester-poc
+    environment:
+      - DOTNET_ENVIRONMENT=Container
+    build:
+      context: ./IngesterPOC
+    volumes:
+      - "${SENSOR_DATA_LOCATION}:/app/data"
+    restart: always
