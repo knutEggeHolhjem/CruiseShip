@@ -32,7 +32,7 @@ To maintain a clean separation of concerns and enable scalability, the component
 ### 🔍 Design Rationale & Choices
 
 - **Decoupled Workflows**  
-  File writing and data generation operate independently, promoting scalability by extending the pipeline and enhancing the testability of separate stages.
+  File writing and data generation operate independently, promoting scalability by extending the pipeline and making testing of separate stages easier.
 
 - **Consistent Intervals**  
   `PeriodicTimer.WaitForNextTickAsync()` ensures precise timing and prevents drift, unlike using `Thread.Sleep()` or `Task.Delay()`.
