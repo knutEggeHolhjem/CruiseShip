@@ -75,7 +75,7 @@ public class FileProcessingWorker : BackgroundService
             FileName = fileName,
             SuccessEntries = successEntries,
             FailedEntries = failedEntries,
-            Errors = errors.AsReadOnly()
+            Errors = errors
         };
     }
 }
