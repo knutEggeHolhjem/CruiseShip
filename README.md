@@ -1,24 +1,25 @@
 ## Run
 
-To start the solution, execute the following command from the root of your solution:
+Add an .env file with a location for where to print sensor data, like this: SENSOR_DATA_LOCATION=<location>
+Example: SENSOR_DATA_LOCATION=./data
+
+Then run
 
 ```bash
 docker-compose up --build
 ```
 
-This version is clearer and follows a more standard format for startup instructions. It highlights the necessary steps and clarifies that the `data` directory is mounted to the root project directory.
-
 
 ## 🧩 Design SensorPOC
 
-**SensorPOC** is responsible for generating and persisting synthetic sensor data at a consistent interval of **1 Hz**.
+**SensorPOC** is responsible for generating and persisting synthetic sensor data at a consistent interval.
 
 To maintain a clean separation of concerns and enable scalability, the component is split into two background services:
 
 ---
 
 - **`DataGeneratorWorker`**  
-  Generates synthetic sensor data every second using an infinite loop combined with a `PeriodicTimer`.  
+  Generates sensor data every second using an infinite loop combined with a `PeriodicTimer`.  
   Each data point is pushed into a **FIFO channel** for downstream processing.
 
 - **`FileWriterWorker`**  
